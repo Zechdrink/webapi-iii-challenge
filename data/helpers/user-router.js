@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {
+router.post('/', restricted, async (req, res) => {
     try {
       const user = await Users.insert(req.body);
       res.status(201).json(user);
@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
       }
   })
 
-  router.put('/:id', async (req, res) => {
+  router.put('/:id', restricted, async (req, res) => {
       try {
         const user = await Users.update(req.params.id, req.body);
         if(user){
@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
 
   router.get('/:id/messages', async (req, res) => {
     try {
-        
+
       const messages = await  Users.getUserPosts(req.params.id);
   
       res.status(200).json(messages);
@@ -82,5 +82,16 @@ router.post('/', async (req, res) => {
       });
     }
   });
+
+  function restricted(req, res, next){
+    const require = req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1);
+
+    if(req.body.name === require){
+        next()
+    } else {
+        res.status(401).send('learn how to capitalize things you idiot')
+    }
+
+  }
 
 module.exports = router;
