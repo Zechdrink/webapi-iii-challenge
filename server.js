@@ -18,4 +18,10 @@ server.get('/', (req, res, next) => {
     
 })
 
+server.post('/', (req, res, next) => {
+
+    res.send('Leggo!');
+
+})
+
 module.exports = server;
