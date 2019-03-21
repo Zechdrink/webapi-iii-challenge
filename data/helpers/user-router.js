@@ -45,7 +45,7 @@ router.post('/', restricted, async (req, res) => {
   router.delete('/:id', async (req, res) => {
       try {
           const count = await Users.remove(req.params.id);
-          if(count < 0){
+          if(count > 0){
               res.status(200).json("The user has been terminated")
           } else {
               res.status(404).json("The user could not be found.")
@@ -83,13 +83,14 @@ router.post('/', restricted, async (req, res) => {
     }
   });
 
+
   function restricted(req, res, next){
     const require = req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1);
 
     if(req.body.name === require){
         next()
     } else {
-        res.status(401).send('learn how to capitalize things you idiot')
+        res.status(401).send('learn how to capitalize things')
     }
 
   }
